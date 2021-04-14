@@ -203,6 +203,23 @@ class ChatUser
         }
     }
 
+    function update_user_login_data()
+    {
+        $query = "UPDATE chat_user_table SET user_login_status = :user_login_status WHERE user_id = :user_id";
+
+        $statement = $this->connect->prepare($query);
+        $statement->bindParam(':user_login_status', $this->user_login_status);
+        $statement->bindParam(':user_id', $this->user_id);
+
+        if($statement->execute())
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }
 
 ?>
