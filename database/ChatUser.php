@@ -220,6 +220,51 @@ class ChatUser
         }
     }
 
+    function get_user_data_by_id()
+    {
+        $query = "SELECT *FROM chat_user_table WHERE user_id = :user_id";
+
+        $statement = $this->connect->prepare($query);
+        $statement->bindParam(':user_id', $this->user_id);
+
+        if($statement->execute())
+        {
+            $user_data = $statement->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return $user_data;
+    }
+
+    function upload_image($user_profile)
+    {
+        $extension = explode('.', $user_profile['name']);
+        $new_name = rand(). '.'.$extension[1];
+        $destination = 'images/' . $new_name;
+        move_uploaded_file($user_profile['tmp_name'], $destination);
+        return $destination;
+    }
+
+    function update_data()
+    {
+        $query = "UPDATE chat_user_table SET user_name = :user_name, user_email = :user_email, user_password = :user_password, user_profile = :user_profile WHERE user_id = :user_id";
+
+        $statement = $this->connect->prepare($query);
+
+        $statement->bindParam(':user_name', $this->user_name);
+        $statement->bindParam(':user_email', $this->user_email);
+        $statement->bindParam(':user_password', $this->user_password);
+        $statement->bindParam(':user_profile', $this->user_profile);
+        $statement->bindParam(':user_id', $this->user_id);
+
+        if($statement->execute())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
 
 ?>
