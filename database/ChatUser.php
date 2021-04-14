@@ -146,7 +146,7 @@ class ChatUser
 
     function save_data()
     {
-        $query = "INSERT INTO chat_user_table(user_name, user_email, user_profile, user_status, user_created_on, user_verification_code) VALUES (:user_name, :user_email, :user_password, :user_profile, :user_status, :user_created_on, :user_verification_code)";
+        $query = "INSERT INTO chat_user_table(user_name, user_email, user_password, user_profile, user_status, user_created_on, user_verification_code) VALUES (:user_name, :user_email, :user_password, :user_profile, :user_status, :user_created_on, :user_verification_code)";
 
         $statement = $this->connect->prepare($query);
         $statement->bindParam(':user_name', $this->user_name);
