@@ -134,7 +134,7 @@ if(isset($_POST["register"]))
                                     data-parsley-type ="email"></div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input required class="form-control form-control-user" type="password" id="user_password" placeholder="Enter password" name="user_password" data-parsley-type = "/^[a-zA-Z\s]+$/" data-parsley-minlength="6" data-parsley-maxlength="12"></div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input required class="form-control form-control-user" type="password" id="user_password" placeholder="Enter password" name="user_password" data-parsley-type = "/^[a-zA-Z1-9]+$/" data-parsley-minlength="6" data-parsley-maxlength="12"></div>
                                 </div><input class="btn btn-primary btn-block text-white btn-user" type="submit" value="Register" name="register">
                                 <hr>
                             </form>
