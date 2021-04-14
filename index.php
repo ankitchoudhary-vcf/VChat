@@ -67,7 +67,6 @@ if(isset($_POST['login']))
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css?h=9db842b3dc3336737559eb4abc0f1b3d">
 
     <link rel="shortcut icon" href="assets/images/favicon.ico">
-
 </head>
 
 <body class="bg-gradient-primary">
@@ -129,16 +128,18 @@ if(isset($_POST['login']))
             </div>
         </div>
     </div>
-    <script>
-    $(document).ready(function(){
-        $('#login_form').parsley();
-    });
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script type="text/javascript" src="vendor-front/parsley/dist/parsley.min.js"></script>
     <script src="assets/js/script.min.js?h=b86d882c5039df370319ea6ca19e5689"></script>
 </body>
+
+<script>
+    $(document).ready(function(){
+        $('#login_form').parsley();
+    });
+</script>
 
 </html>

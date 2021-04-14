@@ -127,19 +127,19 @@ if(isset($_POST["register"]))
                             <form class="user" method="post" id="register_form">
                                 <div class="form-group row">
                                     <div class="col-sm-6"><input required class="form-control form-control-user" type="text" id="user_name" placeholder="Enter Name" name="user_name" 
-                                    data-parsley-type = "/^[a-zA-Z\s]+$/"></div>
+                                    data-parsley-pattern="/^[a-zA-Z\s]+$/"></div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6"><input required class="form-control form-control-user" type="email" id="user_email" placeholder="Enter Email" name="user_email" 
                                     data-parsley-type ="email"></div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input required class="form-control form-control-user" type="password" id="user_password" placeholder="Enter password" name="user_password" data-parsley-type = "/^[a-zA-Z1-9]+$/" data-parsley-minlength="6" data-parsley-maxlength="12"></div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input required class="form-control form-control-user" type="password" id="user_password" placeholder="Enter password" name="user_password" data-parsley-pattern="/^[a-zA-Z1-9\s]+$/" data-parsley-minlength="6" data-parsley-maxlength="12"></div>
                                 </div><input class="btn btn-primary btn-block text-white btn-user" type="submit" value="Register" name="register">
                                 <hr>
                             </form>
 
-                            <div class="text-center"><a class="small" href="login.php">Already have an account? Login!</a></div>
+                            <div class="text-center"><a class="small" href="index.php">Already have an account? Login!</a></div>
                         </div>
                     </div>
                 </div>
@@ -147,16 +147,20 @@ if(isset($_POST["register"]))
         </div>
     </div>
 
-    <script>
-    $(document).ready(function(){
-        $('#register_form').parsley();
-    });
-    </script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script type="text/javascript" src="vendor-front/parsley/dist/parsley.min.js"></script>
     <script src="assets/js/script.min.js?h=b86d882c5039df370319ea6ca19e5689"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#register_form').parsley();
+        });
+    </script>
+
 </body>
 
 </html>

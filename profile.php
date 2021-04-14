@@ -113,8 +113,6 @@ if(isset($_POST['edit']))
 		</div>
 	</div>
 </body>
-</html>
-
 <script>
 
 $(document).ready(function(){
@@ -137,3 +135,4 @@ $(document).ready(function(){
 });
 
 </script>
+</html>
