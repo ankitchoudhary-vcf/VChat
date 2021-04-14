@@ -1,5 +1,12 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php';
+
+
 $error = '';
 $success_message = '';
 
@@ -32,7 +39,28 @@ if(isset($_POST["register"]))
     {
         if($user_object->save_data())
         {
-            $success_message = 'Registration Completed';
+            $mail = new PHPMailer(true);
+            $mail->IsSMTP(); 
+            $mail->isHTML(true);
+            $mail->SMTPDebug  = 0;                     
+            $mail->SMTPAuth   = true;                  
+            $mail->SMTPSecure = "ssl";                 
+            $mail->Host       = "smtp.gmail.com";      
+            $mail->Port        = '465'; 
+            $mail->Username = 'aicephotoc@gmail.com';
+            $mail->Password = 'aicephotoc123';
+            $mail->setFrom('aicephotoc@gmail.com', 'VChat');
+            $mail->addAddress($user_object->getUserEmail());
+            $mail->Subject = 'Registration Verification for Chat Application Demo';
+            $mail->Body = '
+            <p>Thank you for registering for Chat Application Demo.</p>
+                <p>This is a verification email, please click on the link to verify your email address.</p>
+                <p><a href="http://localhost/VChat/verify.php?code='.$user_object->getUserVerificationCode().'">Click to Verify</a></p>
+                <p>Thank you....</p>
+            ';
+            $mail->send();
+
+            $success_message = 'Verification Email sent to '.$user_object->getUserEmail().', so before login first verify your account';
         }
         else{
             $error  ='Something went wrong try again';
