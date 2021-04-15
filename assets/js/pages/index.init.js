@@ -16,7 +16,7 @@ $(document).ready(function() {
         $(".user-profile-sidebar").hide()
     }), $(".user-profile-show").click(function() {
         $(".user-profile-sidebar").show()
-    }), $(".chat-user-list li a").click(function() {
+    }), $("#chat-broadcast").click(function() {
         $(".user-chat").addClass("user-chat-show")
     }), $(".user-chat-remove").click(function() {
         $(".user-chat").removeClass("user-chat-show")

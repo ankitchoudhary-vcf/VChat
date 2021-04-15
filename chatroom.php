@@ -20,6 +20,8 @@ $user_object->setUserId($user_id);
 
 $user_data = $user_object->get_user_data_by_id();
 
+$users_data = $user_object->get_user_all_data();
+
 require('database/ChatRooms.php');
 
 $chat_object = new ChatRooms;
@@ -89,6 +91,11 @@ $chat_data = $chat_object->get_all_chat_data();
                     <li class="nav-item" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Chats">
                         <a class="nav-link active" id="pills-chat-tab" data-toggle="pill" href="#pills-chat" role="tab">
                             <i class="ri-message-3-line"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item" title="Broadcast Room">
+                        <a class="nav-link" id="chat-broadcast" href="#" role="tab">
+                            <i class="ri-group-line"></i>
                         </a>
                     </li>
                     <li class="nav-item" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Settings">
@@ -236,22 +243,58 @@ $chat_data = $chat_object->get_all_chat_data();
                             <div class="chat-message-list" data-simplebar>
 
                                 <ul class="list-unstyled chat-list chat-user-list">
-                                    <li>
-                                        <a href="#">
-                                            <div class="media">
-                                                <div class="chat-user-img online align-self-center mr-3">
-                                                    <img src="assets/images/users/avatar-4.jpg" class="rounded-circle avatar-xs" alt="">
-                                                    <span class="user-status"></span>
-                                                </div>
-                                                <div class="media-body overflow-hidden">
-                                                    <h5 class="text-truncate font-size-15 mb-1">Doris Brown</h5>
-                                                    <p class="chat-user-message text-truncate mb-0">Nice to meet you</p>
-                                                </div>
-                                                <div class="font-size-11">10:12 AM</div>
+                                <?php
+                                
+                                if(count($users_data) > 0)
+                                {
+                                    foreach($users_data as $key => $user)
+                                    {
+                                        if($user['user_login_status'] == 'Login')
+                                        {
+                                            echo '
+                                                <li>
+                                                <a href="#pills-chat">
+                                                    <div class="media">
+                                                        <div class="chat-user-img online align-self-center mr-3">
+                                                            <img src="'.$user['user_profile'].'" class="rounded-circle avatar-xs" alt="">
+                                                            <span class="user-status"></span>
+                                                        </div>
+                                                        <div class="media-body overflow-hidden">
+                                                            <h5 class="text-truncate font-size-15 mb-1">'.$user['user_name'].'</h5>
+                                                            <p class="chat-user-message text-truncate mb-0">Nice to meet you</p>
+                                                        </div>
+                                                        <div class="font-size-11">10:12 AM</div>
+        
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            ';
+                                        }
+                                        else
+                                        {
+                                            echo '
+                                                <li>
+                                                <a href="#pills-chat">
+                                                    <div class="media">
+                                                        <div class="chat-user-img offline align-self-center mr-3">
+                                                            <img src="'.$user['user_profile'].'" class="rounded-circle avatar-xs" alt="">
+                                                            <span class="user-status"></span>
+                                                        </div>
+                                                        <div class="media-body overflow-hidden">
+                                                            <h5 class="text-truncate font-size-15 mb-1">'.$user['user_name'].'</h5>
+                                                            <p class="chat-user-message text-truncate mb-0">Nice to meet you</p>
+                                                        </div>
+                                                        <div class="font-size-11">10:12 AM</div>
+        
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            ';
+                                        }
+                                    }
+                                }
 
-                                            </div>
-                                        </a>
-                                    </li>
+                                ?>
                                 </ul>
                             </div>
 
@@ -383,51 +426,13 @@ $chat_data = $chat_object->get_all_chat_data();
                                         <a href="javascript: void(0);" class="user-chat-remove text-muted font-size-16 p-2"><i class="ri-arrow-left-s-line"></i></a>
                                     </div>
                                     <div class="mr-3">
-                                        <img src="assets/images/users/avatar-4.jpg" class="rounded-circle avatar-xs" alt="">
+                                        <img src="assets/images/small/img-2.jpg" class="rounded-circle avatar-xs" alt="">
                                     </div>
                                     <div class="media-body overflow-hidden">
-                                        <h5 class="font-size-16 mb-0 text-truncate"><a href="#" class="text-reset user-profile-show">Doris Brown</a> <i class="ri-record-circle-fill font-size-10 text-success d-inline-block ml-1"></i>
+                                        <h5 class="font-size-16 mb-0 text-truncate"><a href="#" class="text-reset user-profile-show">Broadcast Room</a> <i class="ri-record-circle-fill font-size-10 text-success d-inline-block ml-1"></i>
                                         </h5>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-8 col-4">
-                                <ul class="list-inline user-chat-nav text-right mb-0">
-
-                                    <li class="list-inline-item">
-                                        <div class="dropdown">
-                                            <button class="btn nav-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="ri-search-line"></i>
-                                            </button>
-                                            <div class="dropdown-menu p-0 dropdown-menu-right dropdown-menu-md">
-                                                <div class="search-box p-2">
-                                                    <input type="text" class="form-control bg-light border-0" placeholder="Search..">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    <li class="list-inline-item d-none d-lg-inline-block">
-                                        <button type="button" class="btn nav-btn user-profile-show">
-                                            <i class="ri-user-2-line"></i>
-                                        </button>
-                                    </li>
-
-                                    <li class="list-inline-item">
-                                        <div class="dropdown">
-                                            <button class="btn nav-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="ri-more-fill"></i>
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item d-block d-lg-none user-profile-show" href="#">View profile <i class="ri-user-2-line float-right text-muted"></i></a>
-                                                <a class="dropdown-item" href="#">Archive <i class="ri-archive-line float-right text-muted"></i></a>
-                                                <a class="dropdown-item" href="#">Muted <i class="ri-volume-mute-line float-right text-muted"></i></a>
-                                                <a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-right text-muted"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -442,7 +447,7 @@ $chat_data = $chat_object->get_all_chat_data();
                                     
                                     if(isset($_SESSION['user_data'][$chat['userid']]))
                                     {
-                                        $from = 'ME';
+                                        $from = 'Me';
                                         echo "<li><div class='conversation-list'><div class='chat-avatar'><img src=".$user_data['user_profile']." alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>".$chat['msg']."</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>".$chat['created_on']."</span></p></div></div><div class='conversation-name'>".$from."</div></div></div></li>";
                                     }
                                     else
@@ -496,239 +501,6 @@ $chat_data = $chat_object->get_all_chat_data();
                     <!-- end chat input section -->
                 </div>
                 <!-- end chat conversation section -->
-
-                <!-- start User profile detail sidebar -->
-                <div class="user-profile-sidebar">
-                    <div class="px-3 px-lg-4 pt-3 pt-lg-4">
-                        <div class="user-chat-nav text-right">
-                            <button type="button" class="btn nav-btn" id="user-profile-hide">
-                                <i class="ri-close-line"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="text-center p-4 border-bottom">
-                        <div class="mb-4">
-                            <img src="assets/images/users/avatar-4.jpg" class="rounded-circle avatar-lg img-thumbnail" alt="">
-                        </div>
-
-                        <h5 class="font-size-16 mb-1 text-truncate">Doris Brown</h5>
-                        <p class="text-muted text-truncate mb-1"><i class="ri-record-circle-fill font-size-10 text-success mr-1"></i> Active</p>
-                    </div>
-                    <!-- End profile user -->
-
-                    <!-- Start user-profile-desc -->
-                    <div class="p-4 user-profile-desc" data-simplebar>
-
-                        <div id="profile-user-accordion" class="custom-accordion">
-                            <div class="card shadow-none border mb-2">
-                                <a href="#collapseOne" class="text-dark" data-toggle="collapse" aria-expanded="true" aria-controls="collapseOne">
-                                    <div class="card-header" id="headingOne">
-                                        <h5 class="font-size-14 m-0">
-                                            <i class="ri-user-2-line mr-2 align-middle d-inline-block"></i> About
-                                            <i class="mdi mdi-chevron-up float-right accor-plus-icon"></i>
-                                        </h5>
-                                    </div>
-                                </a>
-
-                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#profile-user-accordion">
-                                    <div class="card-body">
-
-                                        <div>
-                                            <p class="text-muted mb-1">Name</p>
-                                            <h5 class="font-size-14">Doris Brown</h5>
-                                        </div>
-
-                                        <div class="mt-4">
-                                            <p class="text-muted mb-1">Email</p>
-                                            <h5 class="font-size-14">doris.brown@gmail.com</h5>
-                                        </div>
-
-                                        <div class="mt-4">
-                                            <p class="text-muted mb-1">Date Of Birth</p>
-                                            <h5 class="font-size-14">12-Aug-1987</h5>
-                                        </div>
-
-                                        <div class="mt-4">
-                                            <p class="text-muted mb-1">Location</p>
-                                            <h5 class="font-size-14 mb-0">California, USA</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End About card -->
-
-                            <div class="card mb-1 shadow-none border">
-                                <a href="#collapseTwo" class="text-dark collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="collapseTwo">
-                                    <div class="card-header" id="headingTwo">
-                                        <h5 class="font-size-14 m-0">
-                                            <i class="ri-attachment-line mr-2 align-middle d-inline-block"></i> Attached
-                                            Files
-                                            <i class="mdi mdi-chevron-up float-right accor-plus-icon"></i>
-                                        </h5>
-                                    </div>
-                                </a>
-                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#profile-user-accordion">
-                                    <div class="card-body">
-                                        <div class="card p-2 border mb-2">
-                                            <div class="media align-items-center">
-                                                <div class="avatar-sm mr-3">
-                                                    <div class="avatar-title bg-soft-primary text-primary rounded font-size-20">
-                                                        <i class="ri-file-text-fill"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div class="text-left">
-                                                        <h5 class="font-size-14 mb-1">admin_v1.0.zip</h5>
-                                                        <p class="text-muted font-size-13 mb-0">12.5 MB</p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="ml-4">
-                                                    <ul class="list-inline mb-0 font-size-18">
-                                                        <li class="list-inline-item">
-                                                            <a href="#" class="text-muted px-1">
-                                                                <i class="ri-download-2-line"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li class="list-inline-item dropdown">
-                                                            <a class="dropdown-toggle text-muted px-1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="ri-more-fill"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="profile.php">Edit</a>
-                                                                <div class="dropdown-divider"></div>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end card -->
-
-                                        <div class="card p-2 border mb-2">
-                                            <div class="media align-items-center">
-                                                <div class="avatar-sm mr-3">
-                                                    <div class="avatar-title bg-soft-primary text-primary rounded font-size-20">
-                                                        <i class="ri-image-fill"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div class="text-left">
-                                                        <h5 class="font-size-14 mb-1">Image-1.jpg</h5>
-                                                        <p class="text-muted font-size-13 mb-0">4.2 MB</p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="ml-4">
-                                                    <ul class="list-inline mb-0 font-size-18">
-                                                        <li class="list-inline-item">
-                                                            <a href="#" class="text-muted px-1">
-                                                                <i class="ri-download-2-line"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li class="list-inline-item dropdown">
-                                                            <a class="dropdown-toggle text-muted px-1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="ri-more-fill"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="profile.php">Edit</a>
-                                                                <div class="dropdown-divider"></div>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end card -->
-
-                                        <div class="card p-2 border mb-2">
-                                            <div class="media align-items-center">
-                                                <div class="avatar-sm mr-3">
-                                                    <div class="avatar-title bg-soft-primary text-primary rounded font-size-20">
-                                                        <i class="ri-image-fill"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div class="text-left">
-                                                        <h5 class="font-size-14 mb-1">Image-2.jpg</h5>
-                                                        <p class="text-muted font-size-13 mb-0">3.1 MB</p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="ml-4">
-                                                    <ul class="list-inline mb-0 font-size-18">
-                                                        <li class="list-inline-item">
-                                                            <a href="#" class="text-muted px-1">
-                                                                <i class="ri-download-2-line"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li class="list-inline-item dropdown">
-                                                            <a class="dropdown-toggle text-muted px-1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="ri-more-fill"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="#">Action</a>
-                                                                <div class="dropdown-divider"></div>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end card -->
-
-                                        <div class="card p-2 border mb-2">
-                                            <div class="media align-items-center">
-                                                <div class="avatar-sm mr-3">
-                                                    <div class="avatar-title bg-soft-primary text-primary rounded font-size-20">
-                                                        <i class="ri-file-text-fill"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div class="text-left">
-                                                        <h5 class="font-size-14 mb-1">Landing-A.zip</h5>
-                                                        <p class="text-muted font-size-13 mb-0">6.7 MB</p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="ml-4">
-                                                    <ul class="list-inline mb-0 font-size-18">
-                                                        <li class="list-inline-item">
-                                                            <a href="#" class="text-muted px-1">
-                                                                <i class="ri-download-2-line"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li class="list-inline-item dropdown">
-                                                            <a class="dropdown-toggle text-muted px-1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="ri-more-fill"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="profile.php">Edit</a>
-                                                                <div class="dropdown-divider"></div>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end card -->
-
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!-- End Attached Files card -->
-                        </div>
-                        <!-- end profile-user-accordion -->
-                    </div>
-                    <!-- end user-profile-desc -->
-                </div>
-                <!-- end User profile detail sidebar -->
             </div>
         </div>
         <!-- End User chat -->
