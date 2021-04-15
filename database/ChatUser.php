@@ -278,6 +278,21 @@ class ChatUser
 
 		return $data;
 	}
+
+    function get_user_all_data_with_status_count()
+	{
+		$query = "SELECT user_id, user_name, user_profile, user_login_status, (SELECT COUNT(*) FROM chat_message WHERE to_user_id = :user_id AND from_user_id = chat_user_table.user_id AND status = 'No') AS count_status FROM chat_user_table";
+
+		$statement = $this->connect->prepare($query);
+
+		$statement->bindParam(':user_id', $this->user_id);
+
+		$statement->execute();
+
+		$data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+		return $data;
+	}
 }
 
 ?>

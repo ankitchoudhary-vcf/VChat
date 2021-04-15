@@ -22,6 +22,8 @@ $user_data = $user_object->get_user_data_by_id();
 
 $users_data = $user_object->get_user_all_data();
 
+$user_private_data = $user_object->get_user_all_data_with_status_count();
+
 require('database/ChatRooms.php');
 
 $chat_object = new ChatRooms;
@@ -253,7 +255,7 @@ $chat_data = $chat_object->get_all_chat_data();
                                         {
                                             echo '
                                                 <li>
-                                                <a href="#pills-chat">
+                                                <a href="#">
                                                     <div class="media">
                                                         <div class="chat-user-img online align-self-center mr-3">
                                                             <img src="'.$user['user_profile'].'" class="rounded-circle avatar-xs" alt="">
@@ -274,7 +276,7 @@ $chat_data = $chat_object->get_all_chat_data();
                                         {
                                             echo '
                                                 <li>
-                                                <a href="#pills-chat">
+                                                <a href="#">
                                                     <div class="media">
                                                         <div class="chat-user-img offline align-self-center mr-3">
                                                             <img src="'.$user['user_profile'].'" class="rounded-circle avatar-xs" alt="">
