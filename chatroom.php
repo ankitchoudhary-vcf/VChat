@@ -678,78 +678,7 @@ $chat_data = $chat_object->get_all_chat_data();
 
         function make_chat_area(user_name, user_profile)
         {
-            var html = `
-            <div class="d-lg-flex">
-                <!-- start chat conversation section -->
-                <div class="w-100">
-                    <div class="p-3 p-lg-4 border-bottom">
-                        <div class="row align-items-center">
-                            <div class="col-sm-4 col-8">
-                                <div class="media align-items-center">
-                                    <div class="d-block d-lg-none mr-2">
-                                        <a href="javascript: void(0);" class="user-private-chat-remove text-muted font-size-16 p-2"><i class="ri-arrow-left-s-line"></i></a>
-                                    </div>
-                                    <div class="mr-3">
-                                        <img src=`+user_profile+` class="rounded-circle avatar-xs" alt="">
-                                    </div>
-                                    <div class="media-body overflow-hidden">
-                                        <h5 class="font-size-16 mb-0 text-truncate"><a href="#" class="text-reset user-profile-show">`+user_name+`</a> <i class="ri-record-circle-fill font-size-10 text-success d-inline-block ml-1"></i>
-                                        </h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end chat user head -->
-
-                    <!-- start chat conversation -->
-                    <div class="chat-conversation p-3 p-lg-4" data-simplebar="init">
-                        <ul class="list-unstyled mb-0" id="private_chat_area">
-                            
-                        </ul>
-                    </div>
-                    <!-- end chat conversation end -->
-
-                    <!-- start chat input section -->
-                    <form method="post" id="private_chat_form">
-                        <div class="p-3 p-lg-4 border-top mb-0">
-                            <div class="row no-gutters">
-                                <div class="col">
-                                    <div>
-                                        <input type="text" id="chat_message" data-parsley-maxlength="1000" class="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." require>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="chat-input-links ml-md-2">
-                                        <ul class="list-inline mb-0">
-                                            <li class="list-inline-item">
-                                                <button type="button" class="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect" data-toggle="tooltip" data-placement="top" title="Emoji">
-                                                    <i class="ri-emotion-happy-line"></i>
-                                                </button>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <button type="button" class="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect" data-toggle="tooltip" data-placement="top" title="Attached File">
-                                                    <i class="ri-attachment-line"></i>
-                                                </button>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <button type="submit" name="sendmsg" id="sendmsg" class="btn btn-primary font-size-16 btn-lg chat-send waves-effect waves-light">
-                                                    <i class="ri-send-plane-2-fill"></i>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                                <div id="validation_errors"></div>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- end chat input section -->
-                </div>
-                <!-- end chat conversation section -->
-            </div>
-            `;
+            var html = "<div class='d-lg-flex'><div class='w-100'><div class='p-3 p-lg-4 border-bottom'><div class='row align-items-center'><div class='col-sm-4 col-8'><div class='media align-items-center'><div class='d-block d-lg-none mr-2'> <a href='javascript: void(0);' class='user-private-chat-remove text-muted font-size-16 p-2'><i class='ri-arrow-left-s-line'></i></a></div><div class='mr-3'> <img src="+user_profile+" class='rounded-circle avatar-xs' alt=''></div><div class='media-body overflow-hidden'><h5 class='font-size-16 mb-0 text-truncate'><a href='#' class='text-reset user-profile-show'>"+user_name+"</a> <i class='ri-record-circle-fill font-size-10 text-success d-inline-block ml-1'></i></h5></div></div></div></div></div><div class='chat-conversation p-3 p-lg-4' data-simplebar='init'><ul class='list-unstyled mb-0' id='private_chat_area'></ul></div><form method='post' id='private_chat_form'><div class='p-3 p-lg-4 border-top mb-0'><div class='row no-gutters'><div class='col'><div> <input type='text' id='chat_message' data-parsley-maxlength='1000' class='form-control form-control-lg bg-light border-light' placeholder='Enter Message...' require></div></div><div class='col-auto'><div class='chat-input-links ml-md-2'><ul class='list-inline mb-0'><li class='list-inline-item'> <button type='button' class='btn btn-link text-decoration-none font-size-16 btn-lg waves-effect' data-toggle='tooltip' data-placement='top' title='Emoji'> <i class='ri-emotion-happy-line'></i> </button></li><li class='list-inline-item'> <button type='button' class='btn btn-link text-decoration-none font-size-16 btn-lg waves-effect' data-toggle='tooltip' data-placement='top' title='Attached File'> <i class='ri-attachment-line'></i> </button></li><li class='list-inline-item'> <button type='submit' name='sendmsg' id='sendmsg' class='btn btn-primary font-size-16 btn-lg chat-send waves-effect waves-light'> <i class='ri-send-plane-2-fill'></i> </button></li></ul></div></div><div id='validation_errors'></div></div></div></form></div></div>";
 
             $('#chat_area').html(html);
             $('#private_chat_form').parsley();
@@ -780,9 +709,7 @@ $chat_data = $chat_object->get_all_chat_data();
 				dataType:"JSON",
 				success:function(data)
 				{
-                    var response = JSON.parse(data);
-
-                    console.log(response);
+                    console.log('success');
                     
                     if(data.length > 0)
                     {
