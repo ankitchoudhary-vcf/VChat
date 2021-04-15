@@ -430,9 +430,9 @@ $user_data = $user_object->get_user_data_by_id();
 
                     <!-- start chat conversation -->
                     <div class="chat-conversation p-3 p-lg-4" data-simplebar="init">
-                        <div id="messages_area">
+                        <ul class="list-unstyled mb-0" id="messages_area">
 
-                        </div>
+                        </ul>
                     </div>
                     <!-- end chat conversation end -->
 
@@ -748,13 +748,10 @@ $user_data = $user_object->get_user_data_by_id();
 
             var data = JSON.parse(e.data);
 
-            var row_class = 'row justify-content-start';
-            var background_class = 'text-dark alert-light';
-            var html_data = "<div class ='"+row_class+"'><div class = 'col-sm-10'><div class = 'shadow-sm alert "+background_class+"'>"+data.msg+"</div></div></div>";
+            var html_data = "<li class='right'><div class='conversation-list'><div class='chat-avatar'><img src="+data.user_profile+" alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>"+data.msg+"</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>"+data.msgTime+"</span></p></div></div><div class='conversation-name'>"+data.user_name+"</div></div></div></li>";
 
             $('#messages_area').append(html_data);
-
-            
+            $('#chat_message').val('');
 
         }
 
@@ -768,11 +765,23 @@ $user_data = $user_object->get_user_data_by_id();
                 var user_id = $('#login_user_id').val();
                 var message = $('#chat_message').val();
 
-                var data = {
-                    userId: user_id,
-                    msg: message
-                };
+                var currentdate = new Date(); 
+                var datetime = currentdate.getDate() + "/"
+                            + (currentdate.getMonth()+1)  + "/" 
+                            + currentdate.getFullYear() + " @ "  
+                            + currentdate.getHours() + ":"  
+                            + currentdate.getMinutes() + ":" 
+                            + currentdate.getSeconds();
+
+
+                var data = <?php echo json_encode($user_object->get_user_data_by_id()); ?>;
+                data['msg'] = message;
+                data['msgTime'] = datetime;
+
                 $('#chat_message').val('');
+
+                var html_data = "<li><div class='conversation-list'><div class='chat-avatar'><img src="+data.user_profile+" alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>"+data.msg+"</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>"+data.msgTime+"</span></p></div></div><div class='conversation-name'>"+data.user_name+"</div></div></div></li>";
+                $('#messages_area').append(html_data);
                 conn.send(JSON.stringify(data));
 
             }
