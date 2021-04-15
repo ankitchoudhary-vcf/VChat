@@ -678,7 +678,7 @@ $chat_data = $chat_object->get_all_chat_data();
 
         function make_chat_area(user_name, user_profile)
         {
-            var html_data = `
+            var html = `
             <div class="d-lg-flex">
                 <!-- start chat conversation section -->
                 <div class="w-100">
@@ -751,7 +751,7 @@ $chat_data = $chat_object->get_all_chat_data();
             </div>
             `;
 
-            $('#chat_area').html(html_data);
+            $('#chat_area').html(html);
             $('#private_chat_form').parsley();
         }
 
@@ -768,6 +768,59 @@ $chat_data = $chat_object->get_all_chat_data();
 
             $('#is_active_chat').val('Yes');
 
+
+            $.ajax({
+				url:"action.php",
+				method:"POST",
+				data:{action:'fetch_chat', to_user_id:receiver_user_id, from_user_id:from_user_id},
+				dataType:"JSON",
+				success:function(data)
+				{
+                    
+                    if(data.length > 0)
+                    {
+
+                        var html_data = '';
+
+                        for(var count = 0; count < data.length; count++)
+                        {
+                            if(data[count].from_user_id == from_user_id)
+                            {
+                                $form_user_name = 'Me';
+                            }
+                            else
+                            {
+                                    $form_user_name = data[count].from_user_name;
+                            }
+
+                            html_data += `
+                                    <li>
+                                        <div class="conversation-list">
+                                            <div class="chat-avatar">
+                                                <img src=`+data[count].from_user_profile+` alt="">
+                                            </div>
+                                            <div class="user-chat-content">
+                                                <div class="ctext-wrap">
+                                                    <div class="ctext-wrap-content">
+                                                        <p class="mb-0">`+data[count].chat_message+`</p>
+                                                        <p class="chat-time mb-0">
+                                                            <i class="ri-time-line align-middle"></i>
+                                                            <span class="align-middle">`+data[count].timestamp+`</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            <div class="conversation-name">`+from_user_name+`</div>
+                                        </div>
+                                    </li>`;
+
+                            $('#private_chat_area').html(html_data);
+                            $('#private_chat_area').scrollTop($('private_chat_area')[0].scrollHeight);
+                        }
+                    }
+                    
+                }
+            });
+
         });
 
         $(document).on('click', '.user-private-chat-remove', function(){
@@ -775,6 +828,9 @@ $chat_data = $chat_object->get_all_chat_data();
             $(".user-private-chat").removeClass("user-private-chat-show");
             $(".user-private-chat").hide();
             $(".user-chat").show();
+            $('#is_active_chat').val('No');
+			receiver_user_id = '';
+            void(0);
         });
     });
 </script>
