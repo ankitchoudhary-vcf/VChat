@@ -96,7 +96,7 @@ $chat_data = $chat_object->get_all_chat_data();
                         </a>
                     </li>
                     <li class="nav-item" title="Broadcast Room">
-                        <a class="nav-link" id="chat-broadcast" href="#" role="tab">
+                        <a class="nav-link chat-broadcast" href="#">
                             <i class="ri-group-line"></i>
                         </a>
                     </li>
