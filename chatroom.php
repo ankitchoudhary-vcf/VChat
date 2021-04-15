@@ -20,6 +20,11 @@ $user_object->setUserId($user_id);
 
 $user_data = $user_object->get_user_data_by_id();
 
+require('database/ChatRooms.php');
+
+$chat_object = new ChatRooms;
+$chat_data = $chat_object->get_all_chat_data();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -431,7 +436,24 @@ $user_data = $user_object->get_user_data_by_id();
                     <!-- start chat conversation -->
                     <div class="chat-conversation p-3 p-lg-4" data-simplebar="init">
                         <ul class="list-unstyled mb-0" id="messages_area">
-
+                            <?php
+                                foreach($chat_data as $key => $chat)
+                                {
+                                    
+                                    if(isset($_SESSION['user_data'][$chat['userid']]))
+                                    {
+                                        $from = 'ME';
+                                        echo "<li><div class='conversation-list'><div class='chat-avatar'><img src=".$user_data['user_profile']." alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>".$chat['msg']."</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>".$chat['created_on']."</span></p></div></div><div class='conversation-name'>".$from."</div></div></div></li>";
+                                    }
+                                    else
+                                    {
+                                        $from_object = new ChatUser;
+                                        $from_object->setUserId($chat['userid']);
+                                        $from_data = $from_object->get_user_data_by_id();
+                                        echo "<li class='right'><div class='conversation-list'><div class='chat-avatar'><img src=".$from_data['user_profile']." alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>".$chat['msg']."</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>".$chat['created_on']."</span></p></div></div><div class='conversation-name'>".$from_data['user_name']."</div></div></div></li>";
+                                    }
+                                }
+                            ?>
                         </ul>
                     </div>
                     <!-- end chat conversation end -->
@@ -762,6 +784,7 @@ $user_data = $user_object->get_user_data_by_id();
         }
 
         $('#chat_form').parsley();
+        $('#messages_area').scrollTop($('#messages_area')[0].scrollHeight);
 
         $('#chat_form').on('submit', function(event){
 
@@ -779,6 +802,9 @@ $user_data = $user_object->get_user_data_by_id();
 
                 $('#chat_message').val('');
                 conn.send(JSON.stringify(data));
+                
+                $('#messages_area').scrollTop($('#messages_area')[0].scrollHeight);
+
 
             }
         });

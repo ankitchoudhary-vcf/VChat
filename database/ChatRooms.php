@@ -66,6 +66,17 @@ class ChatRooms
 
         $statement->execute();
     }
+
+    function get_all_chat_data()
+    {
+        $query = "SELECT * FROM chatrooms INNER JOIN chat_user_table ON chat_user_table.user_id = chatrooms.userid ORDER BY chatrooms.id ASC";
+
+		$statement = $this->connect->prepare($query);
+
+		$statement->execute();
+
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
  
  ?>
