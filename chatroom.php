@@ -772,10 +772,17 @@ $chat_data = $chat_object->get_all_chat_data();
             $.ajax({
 				url:"action.php",
 				method:"POST",
-				data:{action:'fetch_chat', to_user_id:receiver_user_id, from_user_id:from_user_id},
+				data:{
+                    action:'fetch_chat',
+                    to_user_id: receiver_user_id,
+                    from_user_id: from_user_id
+                },
 				dataType:"JSON",
 				success:function(data)
 				{
+                    var response = JSON.parse(data);
+
+                    console.log(response);
                     
                     if(data.length > 0)
                     {

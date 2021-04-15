@@ -20,7 +20,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'leave')
     }
 }
 
-if(isset($POST['action']) && $POST["action"] == 'fetch_chat')
+if(isset($_POST['action']) && $_POST['action'] == 'fetch_chat')
 {
     require 'database/PrivateChat.php';
 
