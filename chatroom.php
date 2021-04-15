@@ -780,7 +780,7 @@ $user_data = $user_object->get_user_data_by_id();
 
                 $('#chat_message').val('');
 
-                var html_data = "<li><div class='conversation-list'><div class='chat-avatar'><img src="+data.user_profile+" alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>"+data.msg+"</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>"+data.msgTime+"</span></p></div></div><div class='conversation-name'>"+data.user_name+"</div></div></div></li>";
+                var html_data = "<li><div class='conversation-list'><div class='chat-avatar'><img src="+data.user_profile+" alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>"+data.msg+"</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>"+data.msgTime+"</span></p></div></div><div class='conversation-name'>Me</div></div></div></li>";
                 $('#messages_area').append(html_data);
                 conn.send(JSON.stringify(data));
 
