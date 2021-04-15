@@ -11,6 +11,8 @@ class ChatUser
     private $user_verification_code;
     private $user_login_status;
     private $user_profile;
+    private $user_token;
+    private $user_connection_id;
     private $connect;
 
     public function __construct()
@@ -111,6 +113,26 @@ class ChatUser
         return $this->user_login_status;
     }
 
+    function setUserToken($user_token)
+    {
+        $this->user_token = $user_token;
+    }
+
+    function getUserToken()
+    {
+        return $this->user_token;
+    }
+
+    function setUserConnectionID($user_connection_id)
+    {
+        $this->user_connection_id = $user_connection_id;
+    }
+
+    function getUSerConnectionID()
+    {
+        return $this->user_connection_id;
+    }
+
     function make_avatar($character)
     {
         $path = "images/".time().".png";
@@ -205,10 +227,11 @@ class ChatUser
 
     function update_user_login_data()
     {
-        $query = "UPDATE chat_user_table SET user_login_status = :user_login_status WHERE user_id = :user_id";
+        $query = "UPDATE chat_user_table SET user_login_status = :user_login_status, user_token = :user_token WHERE user_id = :user_id";
 
         $statement = $this->connect->prepare($query);
         $statement->bindParam(':user_login_status', $this->user_login_status);
+        $statement->bindParam(':user_token', $this->user_token);
         $statement->bindParam(':user_id', $this->user_id);
 
         if($statement->execute())
@@ -292,6 +315,34 @@ class ChatUser
 		$data = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 		return $data;
+	}
+
+    function update_user_connection_id()
+	{
+		$query = "UPDATE chat_user_table SET user_connection_id = :user_connection_id WHERE user_token = :user_token";
+
+		$statement = $this->connect->prepare($query);
+
+		$statement->bindParam(':user_connection_id', $this->user_connection_id);
+
+		$statement->bindParam(':user_token', $this->user_token);
+
+		$statement->execute();
+	}
+
+    function get_user_id_from_token()
+	{
+		$query = "SELECT user_id FROM chat_user_table WHERE user_token = :user_token";
+
+		$statement = $this->connect->prepare($query);
+
+		$statement->bindParam(':user_token', $this->user_token);
+
+		$statement->execute();
+
+		$user_id = $statement->fetch(PDO::FETCH_ASSOC);
+
+		return $user_id;
 	}
 }
 

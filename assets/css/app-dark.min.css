@@ -915,6 +915,14 @@
 	transition: all .4s
 }
 
+.user-private-chat{
+	background-color: #262e35;
+	-webkit-box-shadow: 0 2px 4px rgba(15, 34, 58, .12);
+	box-shadow: 0 2px 4px rgba(15, 34, 58, .12);
+	-webkit-transition: all .4s;
+	transition: all .4s
+}
+
 @media (max-width:991.98px) {
 	.user-chat {
 		position: fixed;
@@ -944,6 +952,37 @@
 	font-size: 20px;
 	color: #abb4d2
 }
+
+@media (max-width:991.98px) {
+	.user-private-chat {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		visibility: hidden;
+		-webkit-transform: translateX(100%);
+		transform: translateX(100%);
+		z-index: 99
+	}
+	.user-private-chat.user-private-chat-show {
+		visibility: visible;
+		-webkit-transform: translateX(0);
+		transform: translateX(0)
+	}
+}
+
+.user-private-chat-nav .nav-btn {
+	height: 40px;
+	width: 40px;
+	line-height: 40px;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	padding: 0;
+	font-size: 20px;
+	color: #abb4d2
+}
+
 
 .chat-conversation li {
 	clear: both

@@ -11,12 +11,15 @@ require('database/ChatUser.php');
 $user_object = new ChatUser;
 
 $user_id = '';
+$token = '';
 
 foreach ($_SESSION['user_data'] as $key => $value) {
     $user_id = $value['id'];
+    $token = $value['token'];
 }
 
 $user_object->setUserId($user_id);
+
 
 $user_data = $user_object->get_user_data_by_id();
 
@@ -247,54 +250,66 @@ $chat_data = $chat_object->get_all_chat_data();
                                 <ul class="list-unstyled chat-list chat-user-list">
                                 <?php
                                 
-                                if(count($users_data) > 0)
-                                {
-                                    foreach($users_data as $key => $user)
+                                    foreach($user_private_data as $key => $user)
                                     {
-                                        if($user['user_login_status'] == 'Login')
+                                        if($user['user_id'] != $user_id)
                                         {
-                                            echo '
+                                            if($user['user_login_status'] == 'Login')
+                                            {
+                                                $status = "online";
+                                            }
+                                            else
+                                            {
+                                                $status = "away";
+                                            }
+                                            if($user['count_status'] > 0)
+                                            {
+                                                echo '
+                                                <li class="unread">
+                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" id="'.$user['user_id'].'">
+                                                        <div class="media">
+                                                            <div class="chat-user-img '.$status.' align-self-center mr-3">
+                                                                <img src="'.$user['user_profile'].'";
+                                                                    class="rounded-circle avatar-xs" alt="">
+                                                                <span class="user-status"></span>
+                                                            </div>
+                                                            <div class="media-body overflow-hidden">
+                                                                <h5 class="text-truncate font-size-15 mb-1">'.$user['user_name'].'</h5>
+                                                                <p class="chat-user-message text-truncate mb-0"> Images</p>
+                                                            </div>
+                                                            <div class="font-size-11">12 min</div>
+
+                                                            <div class="unread-message">
+                                                                <span class="badge badge-soft-danger badge-pill">'.$user['count_status'].'</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                ';
+                                            }
+                                            else
+                                            {
+                                                echo '
                                                 <li>
-                                                <a href="#">
-                                                    <div class="media">
-                                                        <div class="chat-user-img online align-self-center mr-3">
-                                                            <img src="'.$user['user_profile'].'" class="rounded-circle avatar-xs" alt="">
-                                                            <span class="user-status"></span>
+                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" id="'.$user['user_id'].'">
+                                                        <div class="media">
+                                                            <div class="chat-user-img '.$status.' align-self-center mr-3">
+                                                                <img src="'.$user['user_profile'].'";
+                                                                    class="rounded-circle avatar-xs" alt="">
+                                                                <span class="user-status"></span>
+                                                            </div>
+                                                            <div class="media-body overflow-hidden">
+                                                                <h5 class="text-truncate font-size-15 mb-1">'.$user['user_name'].'</h5>
+                                                                <p class="chat-user-message text-truncate mb-0"> Images</p>
+                                                            </div>
+                                                            <div class="font-size-11">12 min</div>
                                                         </div>
-                                                        <div class="media-body overflow-hidden">
-                                                            <h5 class="text-truncate font-size-15 mb-1">'.$user['user_name'].'</h5>
-                                                            <p class="chat-user-message text-truncate mb-0">Nice to meet you</p>
-                                                        </div>
-                                                        <div class="font-size-11">10:12 AM</div>
-        
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            ';
-                                        }
-                                        else
-                                        {
-                                            echo '
-                                                <li>
-                                                <a href="#">
-                                                    <div class="media">
-                                                        <div class="chat-user-img offline align-self-center mr-3">
-                                                            <img src="'.$user['user_profile'].'" class="rounded-circle avatar-xs" alt="">
-                                                            <span class="user-status"></span>
-                                                        </div>
-                                                        <div class="media-body overflow-hidden">
-                                                            <h5 class="text-truncate font-size-15 mb-1">'.$user['user_name'].'</h5>
-                                                            <p class="chat-user-message text-truncate mb-0">Nice to meet you</p>
-                                                        </div>
-                                                        <div class="font-size-11">10:12 AM</div>
-        
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            ';
+                                                    </a>
+                                                </li>
+                                                ';
+                                            }
                                         }
                                     }
-                                }
 
                                 ?>
                                 </ul>
@@ -414,7 +429,118 @@ $chat_data = $chat_object->get_all_chat_data();
         </div>
         <!-- end chat-leftsidebar -->
 
-        <!-- Start User chat -->
+        <!-- Start User Private Chat -->
+        
+        <div class="user-private-chat w-100" style="display:none;">
+            <div class="d-lg-flex">
+
+                <!-- start chat conversation section -->
+                <div class="w-100">
+                    <div class="p-3 p-lg-4 border-bottom">
+                        <div class="row align-items-center">
+                            <div class="col-sm-4 col-8">
+                                <div class="media align-items-center">
+                                    <div class="d-block d-lg-none mr-2">
+                                        <a href="javascript: void(0);" class="user-private-chat-remove text-muted font-size-16 p-2"><i class="ri-arrow-left-s-line"></i></a>
+                                    </div>
+                                    <div class="mr-3">
+                                        <img src="assets/images/users/avatar-2.jpg" class="rounded-circle avatar-xs" alt="">
+                                    </div>
+                                    <div class="media-body overflow-hidden">
+                                        <h5 class="font-size-16 mb-0 text-truncate"><a href="#" class="text-reset user-profile-show">Broadcast Room</a> <i class="ri-record-circle-fill font-size-10 text-success d-inline-block ml-1"></i>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end chat user head -->
+
+                    <!-- start chat conversation -->
+                    <div class="chat-conversation p-3 p-lg-4" data-simplebar="init">
+                        <ul class="list-unstyled mb-0" id="messages_area">
+                            <?php
+                                foreach($chat_data as $key => $chat)
+                                {
+                                    
+                                    if(isset($_SESSION['user_data'][$chat['userid']]))
+                                    {
+                                        $from = 'Me';
+                                        echo '<li>
+                                        <div class="conversation-list">
+                                            <div class="chat-avatar">
+                                                <img src="'.$user_data['user_profile'].'" alt="">
+                                            </div>
+                                            <div class="user-private-chat-content">
+                                                <div class="ctext-wrap">
+                                                    <div class="ctext-wrap-content">
+                                                        <p class="mb-0">"'.$chat['msg'].'"</p>
+                                                        <p class="chat-time mb-0">
+                                                            <i class="ri-time-line align-middle"></i>
+                                                            <span class="align-middle">"'.$chat['created_on'].'"</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            <div class="conversation-name">"'.$from.'"</div>
+                                        </div>
+                                        </li>';
+                                    }
+                                    else
+                                    {
+                                        $from_object = new ChatUser;
+                                        $from_object->setUserId($chat['userid']);
+                                        $from_data = $from_object->get_user_data_by_id();
+                                        echo "<li class='right'><div class='conversation-list'><div class='chat-avatar'><img src=".$from_data['user_profile']." alt=''></div><div class='user-private-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>".$chat['msg']."</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>".$chat['created_on']."</span></p></div></div><div class='conversation-name'>".$from_data['user_name']."</div></div></div></li>";
+                                    }
+                                }
+                            ?>
+                        </ul>
+                    </div>
+                    <!-- end chat conversation end -->
+
+                    <!-- start chat input section -->
+                    <form method="post" id="chat_form">
+                        <div class="p-3 p-lg-4 border-top mb-0">
+                            <div class="row no-gutters">
+                                <div class="col">
+                                    <div>
+                                        <input type="text" id="chat_message" data-parsley-maxlength="1000" class="form-control form-control-lg bg-light border-light" placeholder="Enter Message..." require>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="chat-input-links ml-md-2">
+                                        <ul class="list-inline mb-0">
+                                            <li class="list-inline-item">
+                                                <button type="button" class="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect" data-toggle="tooltip" data-placement="top" title="Emoji">
+                                                    <i class="ri-emotion-happy-line"></i>
+                                                </button>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <button type="button" class="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect" data-toggle="tooltip" data-placement="top" title="Attached File">
+                                                    <i class="ri-attachment-line"></i>
+                                                </button>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <button type="submit" name="send" id="send" class="btn btn-primary font-size-16 btn-lg chat-send waves-effect waves-light">
+                                                    <i class="ri-send-plane-2-fill"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <div id="validation_errors"></div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- end chat input section -->
+                </div>
+                <!-- end chat conversation section -->
+            </div>
+        </div>
+        <!--End User Private Chat-->
+
+        <!-- Start User BroadCast chat -->
         <div class="user-chat w-100">
             <div class="d-lg-flex">
 
@@ -450,7 +576,24 @@ $chat_data = $chat_object->get_all_chat_data();
                                     if(isset($_SESSION['user_data'][$chat['userid']]))
                                     {
                                         $from = 'Me';
-                                        echo "<li><div class='conversation-list'><div class='chat-avatar'><img src=".$user_data['user_profile']." alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>".$chat['msg']."</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>".$chat['created_on']."</span></p></div></div><div class='conversation-name'>".$from."</div></div></div></li>";
+                                        echo '<li>
+                                        <div class="conversation-list">
+                                            <div class="chat-avatar">
+                                                <img src="'.$user_data['user_profile'].'" alt="">
+                                            </div>
+                                            <div class="user-chat-content">
+                                                <div class="ctext-wrap">
+                                                    <div class="ctext-wrap-content">
+                                                        <p class="mb-0">"'.$chat['msg'].'"</p>
+                                                        <p class="chat-time mb-0">
+                                                            <i class="ri-time-line align-middle"></i>
+                                                            <span class="align-middle">"'.$chat['created_on'].'"</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            <div class="conversation-name">"'.$from.'"</div>
+                                        </div>
+                                        </li>';
                                     }
                                     else
                                     {
@@ -505,7 +648,7 @@ $chat_data = $chat_object->get_all_chat_data();
                 <!-- end chat conversation section -->
             </div>
         </div>
-        <!-- End User chat -->
+        <!-- End User Broadcast chat -->
     </div>
     <!-- end  layout wrapper -->
 
@@ -533,6 +676,18 @@ $chat_data = $chat_object->get_all_chat_data();
 </body>
 <script>
     $(document).ready(function() {
+
+        var conn_private = new WebSocket('ws://localhost:8080?token=<?php echo $token; ?>');
+        conn_private.onopen = function(event)
+        {
+            console.log('Connection Established!');
+        };
+        conn_private.onmessage = function(event)
+        {
+
+        };
+
+
 
         var conn = new WebSocket('ws://localhost:8080');
         conn.onopen = function(e) {

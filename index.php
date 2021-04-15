@@ -25,12 +25,16 @@ if(isset($_POST['login']))
                 $user_object->setUserId($user_data['user_id']);
                 $user_object->setUserLoginStatus('Login');
 
+                $user_token = md5(uniqid());
+                $user_object->setUserToken($user_token);
+                
                 if($user_object->update_user_login_data())
                 {
                     $_SESSION['user_data'][$user_data['user_id']] = [
                         'id' => $user_data['user_id'],
                         'name' => $user_data['user_name'],
-                        'profile' => $user_data['user_profile']
+                        'profile' => $user_data['user_profile'],
+                        'token' => $user_token
                     ];
                     header('location: chatroom.php');
                 }

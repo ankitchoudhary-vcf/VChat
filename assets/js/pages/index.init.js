@@ -13,12 +13,22 @@ $(document).ready(function() {
         nav: !1,
         dots: !1
     }), $("#user-profile-hide").click(function() {
-        $(".user-profile-sidebar").hide()
+        $(".user-profile-sidebar").hide();
     }), $(".user-profile-show").click(function() {
-        $(".user-profile-sidebar").show()
+        $(".user-profile-sidebar").show();
     }), $(".chat-broadcast").click(function() {
-        $(".user-chat").addClass("user-chat-show")
+        $(".user-chat").show();
+        $(".user-chat").addClass("user-chat-show");
+        $(".user-private-chat").hide();
     }), $(".user-chat-remove").click(function() {
-        $(".user-chat").removeClass("user-chat-show")
-    })
+        $(".user-chat").removeClass("user-chat-show");
+    }), $(".chat-user-list li a").click(function(){
+        $(".user-private-chat").addClass("user-private-chat-show");
+        $(".user-private-chat").show();
+        $(".user-chat").hide();
+    }), $(".user-private-chat-remove").click(function(){
+        $(".user-private-chat").removeClass("user-private-chat-show");
+        $(".user-private-chat").hide();
+        $(".user-chat").show();
+    });
 });
