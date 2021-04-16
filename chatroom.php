@@ -266,7 +266,7 @@ $chat_data = $chat_object->get_all_chat_data();
                                             {
                                                 echo '
                                                 <li class="unread">
-                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" id="'.$user['user_id'].'"  name ='.$user['user_profile'].'  rel ='.$user['user_name'].'>
+                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" data-userid='.$user['user_id'].' id="'.$user['user_id'].'"  data-user_name='.$user['user_name'].' data-user_profile ='.$user['user_profile'].' >
                                                         <div class="media">
                                                             <div class="chat-user-img '.$status.' align-self-center mr-3">
                                                                 <img src="'.$user['user_profile'].'";
@@ -280,7 +280,7 @@ $chat_data = $chat_object->get_all_chat_data();
                                                             <div class="font-size-11">12 min</div>
 
                                                             <div class="unread-message">
-                                                                <span class="badge badge-soft-danger badge-pill">'.$user['count_status'].'</span>
+                                                                <span id="userid_'.$user['user_id'].'" class="badge badge-soft-danger badge-pill">'.$user['count_status'].'</span>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -291,7 +291,7 @@ $chat_data = $chat_object->get_all_chat_data();
                                             {
                                                 echo '
                                                 <li>
-                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" id="'.$user['user_id'].'" name ='.$user['user_profile'].'  rel ='.$user['user_name'].'>
+                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" data-userid='.$user['user_id'].' id="'.$user['user_id'].'" data-user_name='.$user['user_name'].' data-user_profile ='.$user['user_profile'].' >
                                                         <div class="media">
                                                             <div class="chat-user-img '.$status.' align-self-center mr-3">
                                                                 <img src="'.$user['user_profile'].'";
@@ -496,7 +496,25 @@ $chat_data = $chat_object->get_all_chat_data();
                                         $from_object = new ChatUser;
                                         $from_object->setUserId($chat['userid']);
                                         $from_data = $from_object->get_user_data_by_id();
-                                        echo "<li class='right'><div class='conversation-list'><div class='chat-avatar'><img src=".$from_data['user_profile']." alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>".$chat['msg']."</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>".$chat['created_on']."</span></p></div></div><div class='conversation-name'>".$from_data['user_name']."</div></div></div></li>";
+                                        echo "<li class='right'>
+                                                <div class='conversation-list'>
+                                                    <div class='chat-avatar'>
+                                                        <img src=".$from_data['user_profile']." alt=''>
+                                                    </div>
+                                                    <div class='user-chat-content'>
+                                                        <div class='ctext-wrap'>
+                                                            <div class='ctext-wrap-content'>
+                                                                <p class='mb-0'>".$chat['msg']."</p>
+                                                                <p class='chat-time mb-0'>
+                                                                    <i class='ri-time-line align-middle'></i>
+                                                                    <span class='align-middle'>".$chat['created_on']."</span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class='conversation-name'>".$from_data['user_name']."</div>
+                                                    </div>
+                                                </div>
+                                            </li>";
                                     }
                                 }
                             ?>
@@ -682,13 +700,15 @@ $chat_data = $chat_object->get_all_chat_data();
 
             $('#chat_area').html(html);
             $('#private_chat_form').parsley();
+
         }
 
         $(document).on('click', '.select_user', function(){
-            receiver_user_id = $(this).data('user_id');
+            receiver_user_id = $(this).data('userid');
             var from_user_id = $('#login_user_id').val();
-            var receiver_user_name = $(this).prop('rel');
-            var receiver_user_profile = $(this).prop('name');
+            var receiver_user_name = $(this).data('user_name');
+            var receiver_user_profile = $(this).data('user_profile');
+
 
             $('.select_user.active').removeClass('active');
             $(this).addClass('active');
@@ -697,37 +717,25 @@ $chat_data = $chat_object->get_all_chat_data();
 
             $('#is_active_chat').val('Yes');
 
-
             $.ajax({
-				url:"action.php",
-				method:"POST",
-				data:{
-                    action:'fetch_chat',
+                url:'action.php',
+                method:'POST',
+                data:{
                     to_user_id: receiver_user_id,
-                    from_user_id: from_user_id
+                    from_user_id: from_user_id,
+                    action:'fetch_chat'
                 },
-				dataType:"JSON",
-				success:function(data)
-				{
-                    console.log('success');
-                    
+                success: function(data){
+                    data = JSON.parse(data);
                     if(data.length > 0)
                     {
-
                         var html_data = '';
 
                         for(var count = 0; count < data.length; count++)
                         {
                             if(data[count].from_user_id == from_user_id)
                             {
-                                $form_user_name = 'Me';
-                            }
-                            else
-                            {
-                                    $form_user_name = data[count].from_user_name;
-                            }
-
-                            html_data += `
+                                html_data += `
                                     <li>
                                         <div class="conversation-list">
                                             <div class="chat-avatar">
@@ -743,17 +751,46 @@ $chat_data = $chat_object->get_all_chat_data();
                                                         </p>
                                                     </div>
                                                 </div>
-                                            <div class="conversation-name">`+from_user_name+`</div>
+                                            <div class="conversation-name">Me</div>
                                         </div>
                                     </li>`;
+                            }
+                            else
+                            {
+                                html_data += `
+                                            <li class='right'>
+                                                <div class='conversation-list'>
+                                                    <div class='chat-avatar'>
+                                                        <img src=`+data[count].from_user_profile+` alt=''>
+                                                    </div>
+                                                    <div class='user-chat-content'>
+                                                        <div class='ctext-wrap'>
+                                                            <div class='ctext-wrap-content'>
+                                                                <p class='mb-0'>`+data[count].chat_message+`</p>
+                                                                <p class='chat-time mb-0'>
+                                                                    <i class='ri-time-line align-middle'></i>
+                                                                    <span class='align-middle'>`+data[count].timestamp+`</span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class='conversation-name'>`+data[count].from_user_name+`</div>
+                                                    </div>
+                                                </div>
+                                            </li>`;
+                            }
 
+                            
+                                    
+                            $('#userid_'+receiver_user_id).html('');
                             $('#private_chat_area').html(html_data);
-                            $('#private_chat_area').scrollTop($('private_chat_area')[0].scrollHeight);
+                            $('#private_chat_area').scrollTop($('#private_chat_area')[0].scrollHeight);
                         }
                     }
-                    
+
                 }
-            });
+            })
+
+            
 
         });
 
