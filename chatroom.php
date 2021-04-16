@@ -98,7 +98,7 @@ $chat_data = $chat_object->get_all_chat_data();
                             <i class="ri-message-3-line"></i>
                         </a>
                     </li>
-                    <li class="nav-item" title="Broadcast Room">
+                    <li class="nav-item" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Settings" title="Broadcast Room">
                         <a class="nav-link chat-broadcast" href="#">
                             <i class="ri-group-line"></i>
                         </a>
@@ -170,7 +170,7 @@ $chat_data = $chat_object->get_all_chat_data();
                                 <img src="<?php echo $user_data['user_profile']; ?>" class="rounded-circle avatar-lg img-thumbnail" alt="">
                             </div>
                             <input type="hidden" name="login_user_id" id="login_user_id" value="<?php echo $user_id; ?>">
-                            <input type="hidden" name="is_active_chat" id="is_active_chat" value="No"/>
+                            <input type="hidden" name="is_active_chat" id="is_active_chat" value="No" />
                             <h5 class="font-size-16 mb-1 text-truncate"><?php echo $user_data['user_name']; ?></h5>
                             <p class="text-muted text-truncate mb-1"><i class="ri-record-circle-fill font-size-10 text-success mr-1 d-inline-block"></i>
                                 Active</p>
@@ -248,59 +248,51 @@ $chat_data = $chat_object->get_all_chat_data();
                             <div class="chat-message-list" data-simplebar>
 
                                 <ul class="list-unstyled chat-list chat-user-list">
-                                <?php
-                                
-                                    foreach($user_private_data as $key => $user)
-                                    {
-                                        if($user['user_id'] != $user_id)
-                                        {
-                                            if($user['user_login_status'] == 'Login')
-                                            {
+                                    <?php
+
+                                    foreach ($user_private_data as $key => $user) {
+                                        if ($user['user_id'] != $user_id) {
+                                            if ($user['user_login_status'] == 'Login') {
                                                 $status = "online";
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 $status = "away";
                                             }
-                                            if($user['count_status'] > 0)
-                                            {
+                                            if ($user['count_status'] > 0) {
                                                 echo '
                                                 <li class="unread">
-                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" data-userid='.$user['user_id'].' id="'.$user['user_id'].'"  data-user_name='.$user['user_name'].' data-user_profile ='.$user['user_profile'].' >
+                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" data-userid=' . $user['user_id'] . ' id="' . $user['user_id'] . '"  data-user_name=' . $user['user_name'] . ' data-user_profile =' . $user['user_profile'] . ' >
                                                         <div class="media">
-                                                            <div class="chat-user-img '.$status.' align-self-center mr-3">
-                                                                <img src="'.$user['user_profile'].'";
+                                                            <div class="chat-user-img ' . $status . ' align-self-center mr-3">
+                                                                <img src="' . $user['user_profile'] . '";
                                                                     class="rounded-circle avatar-xs" alt="">
                                                                 <span class="user-status"></span>
                                                             </div>
                                                             <div class="media-body overflow-hidden">
-                                                                <h5 class="text-truncate font-size-15 mb-1">'.$user['user_name'].'</h5>
-                                                                <p class="chat-user-message text-truncate mb-0"> Images</p>
+                                                                <h5 class="text-truncate font-size-15 mb-1">' . $user['user_name'] . '</h5>
+                                                                <span id="userLs_'.$user['user_id'].'" class="chat-user-message text-truncate mb-0"></span>
                                                             </div>
                                                             <div class="font-size-11">12 min</div>
 
                                                             <div class="unread-message">
-                                                                <span id="userid_'.$user['user_id'].'" class="badge badge-soft-danger badge-pill">'.$user['count_status'].'</span>
+                                                                <span id="userid_' . $user['user_id'] . '" class="badge badge-soft-danger badge-pill">' . $user['count_status'] . '</span>
                                                             </div>
                                                         </div>
                                                     </a>
                                                 </li>
                                                 ';
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 echo '
                                                 <li>
-                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" data-userid='.$user['user_id'].' id="'.$user['user_id'].'" data-user_name='.$user['user_name'].' data-user_profile ='.$user['user_profile'].' >
+                                                    <a href="#" class ="list-group-item list-group-action select_user" style="cursor:pointer;" data-userid=' . $user['user_id'] . ' id="' . $user['user_id'] . '" data-user_name=' . $user['user_name'] . ' data-user_profile =' . $user['user_profile'] . ' >
                                                         <div class="media">
-                                                            <div class="chat-user-img '.$status.' align-self-center mr-3">
-                                                                <img src="'.$user['user_profile'].'";
+                                                            <div class="chat-user-img ' . $status . ' align-self-center mr-3">
+                                                                <img src="' . $user['user_profile'] . '";
                                                                     class="rounded-circle avatar-xs" alt="">
                                                                 <span class="user-status"></span>
                                                             </div>
                                                             <div class="media-body overflow-hidden">
-                                                                <h5 class="text-truncate font-size-15 mb-1">'.$user['user_name'].'</h5>
-                                                                <p class="chat-user-message text-truncate mb-0"> Images</p>
+                                                                <h5 class="text-truncate font-size-15 mb-1">' . $user['user_name'] . '</h5>
+                                                                <span id="userLs_'.$user['user_id'].'" class="chat-user-message text-truncate mb-0"></span>
                                                             </div>
                                                             <div class="font-size-11">12 min</div>
                                                         </div>
@@ -311,7 +303,7 @@ $chat_data = $chat_object->get_all_chat_data();
                                         }
                                     }
 
-                                ?>
+                                    ?>
                                 </ul>
                             </div>
 
@@ -430,9 +422,9 @@ $chat_data = $chat_object->get_all_chat_data();
         <!-- end chat-leftsidebar -->
 
         <!-- Start User Private Chat -->
-        
+
         <div class="user-private-chat w-100" id="chat_area" style="display:none;">
-            
+
         </div>
         <!--End User Private Chat-->
 
@@ -466,57 +458,53 @@ $chat_data = $chat_object->get_all_chat_data();
                     <div class="chat-conversation p-3 p-lg-4" data-simplebar="init">
                         <ul class="list-unstyled mb-0" id="messages_area">
                             <?php
-                                foreach($chat_data as $key => $chat)
-                                {
-                                    
-                                    if(isset($_SESSION['user_data'][$chat['userid']]))
-                                    {
-                                        $from = 'Me';
-                                        echo '<li>
+                            foreach ($chat_data as $key => $chat) {
+
+                                if (isset($_SESSION['user_data'][$chat['userid']])) {
+                                    $from = 'Me';
+                                    echo '<li>
                                         <div class="conversation-list">
                                             <div class="chat-avatar">
-                                                <img src="'.$user_data['user_profile'].'" alt="">
+                                                <img src="' . $user_data['user_profile'] . '" alt="">
                                             </div>
                                             <div class="user-chat-content">
                                                 <div class="ctext-wrap">
                                                     <div class="ctext-wrap-content">
-                                                        <p class="mb-0">"'.$chat['msg'].'"</p>
+                                                        <p class="mb-0">"' . $chat['msg'] . '"</p>
                                                         <p class="chat-time mb-0">
                                                             <i class="ri-time-line align-middle"></i>
-                                                            <span class="align-middle">"'.$chat['created_on'].'"</span>
+                                                            <span class="align-middle">"' . $chat['created_on'] . '"</span>
                                                         </p>
                                                     </div>
                                                 </div>
-                                            <div class="conversation-name">"'.$from.'"</div>
+                                            <div class="conversation-name">"' . $from . '"</div>
                                         </div>
                                         </li>';
-                                    }
-                                    else
-                                    {
-                                        $from_object = new ChatUser;
-                                        $from_object->setUserId($chat['userid']);
-                                        $from_data = $from_object->get_user_data_by_id();
-                                        echo "<li class='right'>
+                                } else {
+                                    $from_object = new ChatUser;
+                                    $from_object->setUserId($chat['userid']);
+                                    $from_data = $from_object->get_user_data_by_id();
+                                    echo "<li class='right'>
                                                 <div class='conversation-list'>
                                                     <div class='chat-avatar'>
-                                                        <img src=".$from_data['user_profile']." alt=''>
+                                                        <img src=" . $from_data['user_profile'] . " alt=''>
                                                     </div>
                                                     <div class='user-chat-content'>
                                                         <div class='ctext-wrap'>
                                                             <div class='ctext-wrap-content'>
-                                                                <p class='mb-0'>".$chat['msg']."</p>
+                                                                <p class='mb-0'>" . $chat['msg'] . "</p>
                                                                 <p class='chat-time mb-0'>
                                                                     <i class='ri-time-line align-middle'></i>
-                                                                    <span class='align-middle'>".$chat['created_on']."</span>
+                                                                    <span class='align-middle'>" . $chat['created_on'] . "</span>
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div class='conversation-name'>".$from_data['user_name']."</div>
+                                                        <div class='conversation-name'>" . $from_data['user_name'] . "</div>
                                                     </div>
                                                 </div>
                                             </li>";
-                                    }
                                 }
+                            }
                             ?>
                         </ul>
                     </div>
@@ -594,13 +582,30 @@ $chat_data = $chat_object->get_all_chat_data();
         var receiver_user_id = '';
 
         var conn_private = new WebSocket('ws://localhost:8080?token=<?php echo $token; ?>');
-        conn_private.onopen = function(event)
-        {
+
+        conn_private.onopen = function(event) {
             console.log('Connection Established!');
         };
-        conn_private.onmessage = function(event)
-        {
+        conn_private.onmessage = function(event) {
+            var data = JSON.parse(event.data);
+            var html_data = '';
+            if (data.from == 'Me') {
+                html_data += "<li><div class='conversation-list'><div class='chat-avatar'><img src=" + data.user_profile + " alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>" + data.msg + "</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>" + data.msgTime + "</span></p></div></div><div class='conversation-name'>" + data.from + "</div></div></div></li>";
+            } else {
+                html_data += "<li class='right'><div class='conversation-list'><div class='chat-avatar'><img src=" + data.user_profile + " alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>" + data.msg + "</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>" + data.msgTime + "</span></p></div></div><div class='conversation-name'>" + data.from + "</div></div></div></li>";
+            }
+            if (receiver_user_id == data.userId || data.from == 'Me') {
+                if ($('#is_active_chat').val() == 'Yes') {
+                    $('#private_chat_area').append(html_data);
+                    $('#private_chat_area').scrollTop($('#private_chat_area')[0].scrollHeight);
+                    $('#private_chat_message').val('');
+                }
+            }
 
+
+        };
+        conn_private.onclose = function(event) {
+            console.log('connection closed!');
         };
 
 
@@ -615,13 +620,10 @@ $chat_data = $chat_object->get_all_chat_data();
 
             var data = JSON.parse(e.data);
 
-            if(data.from == 'Me')
-            {
-                var html_data = "<li><div class='conversation-list'><div class='chat-avatar'><img src="+data.user_profile+" alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>"+data.msg+"</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>"+data.msgTime+"</span></p></div></div><div class='conversation-name'>"+data.from+"</div></div></div></li>";
-            }
-            else
-            {
-                var html_data = "<li class='right'><div class='conversation-list'><div class='chat-avatar'><img src="+data.user_profile+" alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>"+data.msg+"</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>"+data.msgTime+"</span></p></div></div><div class='conversation-name'>"+data.from+"</div></div></div></li>";
+            if (data.from == 'Me') {
+                var html_data = "<li><div class='conversation-list'><div class='chat-avatar'><img src=" + data.user_profile + " alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>" + data.msg + "</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>" + data.msgTime + "</span></p></div></div><div class='conversation-name'>" + data.from + "</div></div></div></li>";
+            } else {
+                var html_data = "<li class='right'><div class='conversation-list'><div class='chat-avatar'><img src=" + data.user_profile + " alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>" + data.msg + "</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>" + data.msgTime + "</span></p></div></div><div class='conversation-name'>" + data.from + "</div></div></div></li>";
             }
             $('#messages_area').append(html_data);
             $('#chat_message').val('');
@@ -631,23 +633,23 @@ $chat_data = $chat_object->get_all_chat_data();
         $('#chat_form').parsley();
         $('#messages_area').scrollTop($('#messages_area')[0].scrollHeight);
 
-        $('#chat_form').on('submit', function(event){
+        $('#chat_form').on('submit', function(event) {
 
             event.preventDefault();
 
-            if($('#chat_form').parsley().isValid()){
+            if ($('#chat_form').parsley().isValid()) {
                 var user_id = $('#login_user_id').val();
                 var message = $('#chat_message').val();
 
-                
-                var data ={
+
+                var data = {
                     userId: user_id,
                     msg: message
                 }
 
                 $('#chat_message').val('');
                 conn.send(JSON.stringify(data));
-                
+
                 $('#messages_area').scrollTop($('#messages_area')[0].scrollHeight);
 
 
@@ -694,16 +696,43 @@ $chat_data = $chat_object->get_all_chat_data();
             })
         });
 
-        function make_chat_area(user_name, user_profile)
-        {
-            var html = "<div class='d-lg-flex'><div class='w-100'><div class='p-3 p-lg-4 border-bottom'><div class='row align-items-center'><div class='col-sm-4 col-8'><div class='media align-items-center'><div class='d-block d-lg-none mr-2'> <a href='javascript: void(0);' class='user-private-chat-remove text-muted font-size-16 p-2'><i class='ri-arrow-left-s-line'></i></a></div><div class='mr-3'> <img src="+user_profile+" class='rounded-circle avatar-xs' alt=''></div><div class='media-body overflow-hidden'><h5 class='font-size-16 mb-0 text-truncate'><a href='#' class='text-reset user-profile-show'>"+user_name+"</a> <i class='ri-record-circle-fill font-size-10 text-success d-inline-block ml-1'></i></h5></div></div></div></div></div><div class='chat-conversation p-3 p-lg-4' data-simplebar='init'><ul class='list-unstyled mb-0' id='private_chat_area'></ul></div><form method='post' id='private_chat_form'><div class='p-3 p-lg-4 border-top mb-0'><div class='row no-gutters'><div class='col'><div> <input type='text' id='chat_message' data-parsley-maxlength='1000' class='form-control form-control-lg bg-light border-light' placeholder='Enter Message...' require></div></div><div class='col-auto'><div class='chat-input-links ml-md-2'><ul class='list-inline mb-0'><li class='list-inline-item'> <button type='button' class='btn btn-link text-decoration-none font-size-16 btn-lg waves-effect' data-toggle='tooltip' data-placement='top' title='Emoji'> <i class='ri-emotion-happy-line'></i> </button></li><li class='list-inline-item'> <button type='button' class='btn btn-link text-decoration-none font-size-16 btn-lg waves-effect' data-toggle='tooltip' data-placement='top' title='Attached File'> <i class='ri-attachment-line'></i> </button></li><li class='list-inline-item'> <button type='submit' name='sendmsg' id='sendmsg' class='btn btn-primary font-size-16 btn-lg chat-send waves-effect waves-light'> <i class='ri-send-plane-2-fill'></i> </button></li></ul></div></div><div id='validation_errors'></div></div></div></form></div></div>";
+        function make_chat_area(user_name, user_profile) {
+            var html = "<div class='d-lg-flex'><div class='w-100'><div class='p-3 p-lg-4 border-bottom'><div class='row align-items-center'><div class='col-sm-4 col-8'><div class='media align-items-center'><div class='d-block d-lg-none mr-2'> <a href='javascript: void(0);' class='user-private-chat-remove text-muted font-size-16 p-2'><i class='ri-arrow-left-s-line'></i></a></div><div class='mr-3'> <img src=" + user_profile + " class='rounded-circle avatar-xs' alt=''></div><div class='media-body overflow-hidden'><h5 class='font-size-16 mb-0 text-truncate'><a href='#' class='text-reset user-profile-show'>" + user_name + "</a> <i class='ri-record-circle-fill font-size-10 text-success d-inline-block ml-1'></i></h5></div></div></div></div></div><div class='chat-conversation p-3 p-lg-4' data-simplebar='init'><ul class='list-unstyled mb-0' id='private_chat_area'></ul></div><form method='post' id='private_chat_form'><div class='p-3 p-lg-4 border-top mb-0'><div class='row no-gutters'><div class='col'><div> <input type='text' id='private_chat_message' data-parsley-maxlength='1000' class='form-control form-control-lg bg-light border-light' placeholder='Enter Message...' require></div></div><div class='col-auto'><div class='chat-input-links ml-md-2'><ul class='list-inline mb-0'><li class='list-inline-item'> <button type='button' class='btn btn-link text-decoration-none font-size-16 btn-lg waves-effect' data-toggle='tooltip' data-placement='top' title='Emoji'> <i class='ri-emotion-happy-line'></i> </button></li><li class='list-inline-item'> <button type='button' class='btn btn-link text-decoration-none font-size-16 btn-lg waves-effect' data-toggle='tooltip' data-placement='top' title='Attached File'> <i class='ri-attachment-line'></i> </button></li><li class='list-inline-item'> <button type='submit' name='sendmsg' id='sendmsg' class='btn btn-primary font-size-16 btn-lg chat-send waves-effect waves-light'> <i class='ri-send-plane-2-fill'></i> </button></li></ul></div></div><div id='validation_errors'></div></div></div></form></div></div>";
 
             $('#chat_area').html(html);
             $('#private_chat_form').parsley();
 
         }
 
-        $(document).on('click', '.select_user', function(){
+        $(document).on('click', '.select_user', function() {
+
+            conn.close();
+            conn_private.close();
+            conn_private = new WebSocket('ws://localhost:8080?token=<?php echo $token; ?>');
+            conn_private.onopen = function(event) {
+                console.log('Connection Established!');
+            };
+            conn_private.onmessage = function(event) {
+                var data = JSON.parse(event.data);
+                var html_data = '';
+                if (data.from == 'Me') {
+                    html_data += "<li><div class='conversation-list'><div class='chat-avatar'><img src=" + data.sender_profile + " alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>" + data.msg + "</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>" + data.msgTime + "</span></p></div></div><div class='conversation-name'>" + data.from + "</div></div></div></li>";
+                } else {
+                    html_data += "<li class='right'><div class='conversation-list'><div class='chat-avatar'><img src=" + data.sender_profile + " alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>" + data.msg + "</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>" + data.msgTime + "</span></p></div></div><div class='conversation-name'>" + data.from + "</div></div></div></li>";
+                }
+                if (receiver_user_id == data.userId || data.from == 'Me') {
+                    if ($('#is_active_chat').val() == 'Yes') {
+                        $('#private_chat_area').append(html_data);
+                        $('#private_chat_area').scrollTop($('#private_chat_area')[0].scrollHeight);
+                        $('#private_chat_message').val('');
+                        $('#userLs_' + receiver_user_id).html(data.msg);
+                    }
+                }
+            };
+            conn_private.onclose = function(event) {
+                console.log('connection closed!');
+            };
+
             receiver_user_id = $(this).data('userid');
             var from_user_id = $('#login_user_id').val();
             var receiver_user_name = $(this).data('user_name');
@@ -718,70 +747,68 @@ $chat_data = $chat_object->get_all_chat_data();
             $('#is_active_chat').val('Yes');
 
             $.ajax({
-                url:'action.php',
-                method:'POST',
-                data:{
+                url: 'action.php',
+                method: 'POST',
+                data: {
                     to_user_id: receiver_user_id,
                     from_user_id: from_user_id,
-                    action:'fetch_chat'
+                    action: 'fetch_chat'
                 },
-                success: function(data){
+                success: function(data) {
                     data = JSON.parse(data);
-                    if(data.length > 0)
-                    {
+                    if (data.length > 0) {
                         var html_data = '';
+                        var chat = ''
 
-                        for(var count = 0; count < data.length; count++)
-                        {
-                            if(data[count].from_user_id == from_user_id)
-                            {
+                        for (var count = 0; count < data.length; count++) {
+                            if (data[count].from_user_id == from_user_id) {
                                 html_data += `
                                     <li>
                                         <div class="conversation-list">
                                             <div class="chat-avatar">
-                                                <img src=`+data[count].from_user_profile+` alt="">
+                                                <img src=` + data[count].from_user_profile + ` alt="">
                                             </div>
                                             <div class="user-chat-content">
                                                 <div class="ctext-wrap">
                                                     <div class="ctext-wrap-content">
-                                                        <p class="mb-0">`+data[count].chat_message+`</p>
+                                                        <p class="mb-0">` + data[count].chat_message + `</p>
                                                         <p class="chat-time mb-0">
                                                             <i class="ri-time-line align-middle"></i>
-                                                            <span class="align-middle">`+data[count].timestamp+`</span>
+                                                            <span class="align-middle">` + data[count].timestamp + `</span>
                                                         </p>
                                                     </div>
                                                 </div>
                                             <div class="conversation-name">Me</div>
                                         </div>
                                     </li>`;
-                            }
-                            else
-                            {
+                                    chat += chat_message; 
+
+                            } else {
                                 html_data += `
                                             <li class='right'>
                                                 <div class='conversation-list'>
                                                     <div class='chat-avatar'>
-                                                        <img src=`+data[count].from_user_profile+` alt=''>
+                                                        <img src=` + data[count].from_user_profile + ` alt=''>
                                                     </div>
                                                     <div class='user-chat-content'>
                                                         <div class='ctext-wrap'>
                                                             <div class='ctext-wrap-content'>
-                                                                <p class='mb-0'>`+data[count].chat_message+`</p>
+                                                                <p class='mb-0'>` + data[count].chat_message + `</p>
                                                                 <p class='chat-time mb-0'>
                                                                     <i class='ri-time-line align-middle'></i>
-                                                                    <span class='align-middle'>`+data[count].timestamp+`</span>
+                                                                    <span class='align-middle'>` + data[count].timestamp + `</span>
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div class='conversation-name'>`+data[count].from_user_name+`</div>
+                                                        <div class='conversation-name'>` + data[count].from_user_name + `</div>
                                                     </div>
                                                 </div>
                                             </li>`;
+                                    chat += data[count].chat_message; 
                             }
 
-                            
-                                    
-                            $('#userid_'+receiver_user_id).html('');
+                            $('#userid_' + receiver_user_id).html('');
+                            $('#userLs_' + receiver_user_id).html(data[count].chat_message);
                             $('#private_chat_area').html(html_data);
                             $('#private_chat_area').scrollTop($('#private_chat_area')[0].scrollHeight);
                         }
@@ -790,18 +817,62 @@ $chat_data = $chat_object->get_all_chat_data();
                 }
             })
 
-            
+
 
         });
 
-        $(document).on('click', '.user-private-chat-remove', function(){
+        $(document).on('click', '.user-private-chat-remove', function() {
             $('.select_user.active').removeClass('active');
             $(".user-private-chat").removeClass("user-private-chat-show");
             $(".user-private-chat").hide();
             $(".user-chat").show();
             $('#is_active_chat').val('No');
-			receiver_user_id = '';
+            receiver_user_id = '';
             void(0);
+        });
+
+        $(document).on('submit', '#private_chat_form', function(event) {
+
+            event.preventDefault();
+
+            if ($('#private_chat_form').parsley().isValid()) {
+                var user_id = $('#login_user_id').val();
+                var message = $('#private_chat_message').val();
+                var data = {
+                    userId: user_id,
+                    msg: message,
+                    receiver_userId: receiver_user_id,
+                    command: 'Private'
+                };
+
+                $('#private_chat_message').val('');
+                conn_private.send(JSON.stringify(data));
+
+            }
+        });
+
+        $(document).on('click', '.chat-broadcast', function(e) {
+            conn_private.close();
+            conn.close();
+            conn = new WebSocket('ws://localhost:8080');
+            conn.onopen = function(e) {
+            console.log("Connection established!");
+        };
+
+        conn.onmessage = function(e) {
+            console.log(e.data);
+
+            var data = JSON.parse(e.data);
+
+            if (data.from == 'Me') {
+                var html_data = "<li><div class='conversation-list'><div class='chat-avatar'><img src=" + data.user_profile + " alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>" + data.msg + "</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>" + data.msgTime + "</span></p></div></div><div class='conversation-name'>" + data.from + "</div></div></div></li>";
+            } else {
+                var html_data = "<li class='right'><div class='conversation-list'><div class='chat-avatar'><img src=" + data.user_profile + " alt=''></div><div class='user-chat-content'><div class='ctext-wrap'><div class='ctext-wrap-content'><p class='mb-0'>" + data.msg + "</p><p class='chat-time mb-0'><i class='ri-time-line align-middle'></i><span class='align-middle'>" + data.msgTime + "</span></p></div></div><div class='conversation-name'>" + data.from + "</div></div></div></li>";
+            }
+            $('#messages_area').append(html_data);
+            $('#chat_message').val('');
+
+        }
         });
     });
 </script>
