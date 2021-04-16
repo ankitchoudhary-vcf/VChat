@@ -727,7 +727,21 @@ $chat_data = $chat_object->get_all_chat_data();
                         $('#private_chat_message').val('');
                         $('#userLs_' + receiver_user_id).html(data.msg);
                     }
+                    else
+                    {
+                        var count_chat = $('#userid_'+data.userId).text();
+
+                        if(count_chat == '')
+                        {
+                            count_chat = 0;
+                        }
+
+                        count_chat++;
+
+                        $('#userid_'+data.userId).html('<span class="badge badge-danger badge-pill">'+count_chat+'</span>');
+                    }
                 }
+                
             };
             conn_private.onclose = function(event) {
                 console.log('connection closed!');
@@ -758,7 +772,6 @@ $chat_data = $chat_object->get_all_chat_data();
                     data = JSON.parse(data);
                     if (data.length > 0) {
                         var html_data = '';
-                        var chat = ''
 
                         for (var count = 0; count < data.length; count++) {
                             if (data[count].from_user_id == from_user_id) {
@@ -781,8 +794,6 @@ $chat_data = $chat_object->get_all_chat_data();
                                             <div class="conversation-name">Me</div>
                                         </div>
                                     </li>`;
-                                    chat += chat_message; 
-
                             } else {
                                 html_data += `
                                             <li class='right'>
@@ -803,8 +814,7 @@ $chat_data = $chat_object->get_all_chat_data();
                                                         <div class='conversation-name'>` + data[count].from_user_name + `</div>
                                                     </div>
                                                 </div>
-                                            </li>`;
-                                    chat += data[count].chat_message; 
+                                            </li>`; 
                             }
 
                             $('#userid_' + receiver_user_id).html('');
