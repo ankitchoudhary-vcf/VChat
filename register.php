@@ -48,7 +48,7 @@ if(isset($_POST["register"]))
             $mail->Host       = "smtp.gmail.com";      
             $mail->Port        = '465'; 
             $mail->Username = 'aicephotoc@gmail.com';
-            $mail->Password = 'aicephotoc123';
+            $mail->Password = 'password';
             $mail->setFrom('aicephotoc@gmail.com', 'VChat');
             $mail->addAddress($user_object->getUserEmail());
             $mail->Subject = 'Registration Verification for Chat Application Demo';
