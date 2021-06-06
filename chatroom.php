@@ -581,7 +581,7 @@ $chat_data = $chat_object->get_all_chat_data();
 
         var receiver_user_id = '';
 
-        var conn_private = new WebSocket('ws://localhost:8080?token=<?php echo $token; ?>');
+        var conn_private = new WebSocket('ws://localhost:8282?token=<?php echo $token; ?>');
 
         conn_private.onopen = function(event) {
             console.log('Connection Established!');
@@ -610,13 +610,13 @@ $chat_data = $chat_object->get_all_chat_data();
 
 
 
-        var conn = new WebSocket('ws://localhost:8080');
+        var conn = new WebSocket('ws://localhost:8282');
         conn.onopen = function(e) {
             console.log("Connection established!");
         };
 
         conn.onmessage = function(e) {
-            console.log(e.data);
+            // console.log(e.data);
 
             var data = JSON.parse(e.data);
 
@@ -708,7 +708,7 @@ $chat_data = $chat_object->get_all_chat_data();
 
             conn.close();
             conn_private.close();
-            conn_private = new WebSocket('ws://localhost:8080?token=<?php echo $token; ?>');
+            conn_private = new WebSocket('ws://localhost:8282?token=<?php echo $token; ?>');
             conn_private.onopen = function(event) {
                 console.log('Connection Established!');
             };
@@ -864,13 +864,13 @@ $chat_data = $chat_object->get_all_chat_data();
         $(document).on('click', '.chat-broadcast', function(e) {
             conn_private.close();
             conn.close();
-            conn = new WebSocket('ws://localhost:8080');
+            conn = new WebSocket('ws://localhost:8282');
             conn.onopen = function(e) {
             console.log("Connection established!");
         };
 
         conn.onmessage = function(e) {
-            console.log(e.data);
+            // console.log(e.data);
 
             var data = JSON.parse(e.data);
 
